@@ -5,6 +5,8 @@ export default defineCliConfig({
     projectId: 'qvmho7ys',
     dataset: 'production'
   },
+  // Deploys to eye-creatures.sanity.studio
+  studioHost: 'eye-creatures',
   deployment: {
     /**
      * Enable auto-updates for studios.

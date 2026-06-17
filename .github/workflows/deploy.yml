@@ -1,0 +1,32 @@
+name: Deploy Sanity Studio
+
+# Runs whenever commits land on main — i.e. when a PR is merged into main.
+on:
+  push:
+    branches: [main]
+
+# If several merges happen quickly, cancel older in-flight deploys.
+concurrency:
+  group: deploy-studio
+  cancel-in-progress: true
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Deploy studio
+        run: npm run deploy -- --yes
+        env:
+          SANITY_AUTH_TOKEN: ${{ secrets.SANITY_AUTH_TOKEN }}
